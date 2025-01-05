@@ -125,10 +125,7 @@ def test_sigmoid(a: float) -> None:
 def test_transitive(a: float, b: float, c: float) -> None:
     """Test the transitive property of less-than (a < b and b < c implies a < c)"""
     if lt(a,b) and lt(b,c):
-        assert(lt(a,b))
-    assert(not lt(a,b))
-
-
+        assert(lt(a,c))
 
 
 @pytest.mark.task0_2
@@ -187,8 +184,11 @@ def test_sum_distribute(ls1: List[float], ls2: List[float]) -> None:
     """Write a test that ensures that the sum of `ls1` plus the sum of `ls2`
     is the same as the sum of each element of `ls1` plus each element of `ls2`.
     """
-    # TODO: Implement for Task 0.3.
-    raise NotImplementedError("Need to implement for Task 0.3")
+
+    left  = sum(ls1) + sum(ls2)
+    right = sum(addLists(ls1, ls2))
+
+    assert_close(left, right)
 
 
 @pytest.mark.task0_3

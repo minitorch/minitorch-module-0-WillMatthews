@@ -94,7 +94,9 @@ def max(x:float, y:float) -> float:
     Returns:
         The maximum of x and y
     """
-    return max(x,y)
+    if x > y:
+        return x
+    return y
 
 def is_close (x:float,y:float) -> bool:
     """
@@ -247,18 +249,98 @@ def relu_back(x:float, y:float) -> float:
 
 # Small practice library of elementary higher-order functions.
 
-# Implement the following core functions
-# - map
-# - zipWith
-# - reduce
-#
-# Use these to implement
-# - negList : negate a list
-# - addLists : add two lists together
-# - sum: sum lists
-# - prod: take the product of lists
+def map(fn: Callable[[float], float], ls: Iterable[float]) -> Iterable[float]:
+    """
+    Map a function over a list.
 
-#def negList(ls: Iterable[float]) -> Iterable[float]:
+    Args:
+        fn (Callable[[float], float]): The function to map over the list.
+        ls (Iterable[float]): The list to map the function over.
+
+    Returns:
+        Iterable[float]: The list with the function mapped over it.
+    """
+    return [fn(x) for x in ls]
 
 
-# TODO: Implement for Task 0.3.
+def zipWith(fn: Callable[[float, float], float], ls1: Iterable[float], ls2: Iterable[float]) -> Iterable[float]:
+    """
+    Zip two lists together with a function.
+
+    Args:
+        fn (Callable[[float, float], float]): The function to zip the lists with.
+        ls1 (Iterable[float]): The first list to zip.
+        ls2 (Iterable[float]): The second list to zip.
+
+    Returns:
+        Iterable[float]: The list zipped with the function.
+    """
+    return [fn(x,y) for x,y in zip(ls1,ls2)]
+
+def reduce(fn: Callable[[float, float], float], ls: Iterable[float], init: float) -> float:
+    """
+    Reduce a list with a function and an initial value.
+
+    Args:
+        fn (Callable[[float, float], float]): The function to reduce the list with.
+        ls (Iterable[float]): The list to reduce.
+        init (float): The initial value to start the reduction.
+
+    Returns:
+        float: The reduced value.
+    """
+    acc = init
+    for x in ls:
+        acc = fn(acc,x)
+    return acc
+
+
+def negList(ls: Iterable[float]) -> Iterable[float]:
+    """
+    Negate a list.
+
+    Args:
+        ls (Iterable[float]): The list to negate.
+
+    Returns:
+        Iterable[float]: The negated list.
+    """
+    return map(neg,ls)
+
+def addLists(ls1: Iterable[float], ls2: Iterable[float]) -> Iterable[float]:
+    """
+    Add two lists together.
+
+    Args:
+        ls1 (Iterable[float]): The first list to add.
+        ls2 (Iterable[float]): The second list to add.
+
+    Returns:
+        Iterable[float]: The sum of the two lists.
+    """
+    return zipWith(add,ls1,ls2)
+
+
+def sum(ls: Iterable[float]) -> float:
+    """
+    Sum a list of numbers.
+
+    Args:
+        ls (Iterable[float]): The list to sum.
+
+    Returns:
+        float: The sum of the list.
+    """
+    return reduce(add,ls,0)
+
+def prod(ls: Iterable[float]) -> float:
+    """
+    Product of a list of numbers.
+
+    Args:
+        ls (Iterable[float]): The list to multiply.
+
+    Returns:
+        float: The product of the list.
+    """
+    return reduce(mul, ls, 1)
